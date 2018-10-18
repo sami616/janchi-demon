@@ -9,6 +9,7 @@ export default ({ data }) => {
     return (
       <div key={id}>
         <h1>{title}</h1>
+        <hr />
         <Link to={slug}>Read more</Link>
       </div>
     )
