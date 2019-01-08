@@ -2,7 +2,8 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import parser from 'html-react-parser'
 
-export default ({ data }) => {
+// COMPONENT
+const Page = ({ data }) => {
   const { contentfulPage: page } = data
   const { id, title, excerpt, body, createdAt, featuredImage, author } = page
   const { file, title: imgTitle, description } = featuredImage
@@ -19,7 +20,9 @@ export default ({ data }) => {
     <div key={id}>
       <h1>{title}</h1>
       <time>{createdAt}</time>
+      <hr />
       {parser(excerptHTML)}
+      <hr />
       {parser(bodyHTML)}
       <img style={{ width: '100%' }} title={imgTitle} alt={description} src={file.url} />
       {author && <p>Post By {author.name}</p>}
@@ -27,13 +30,15 @@ export default ({ data }) => {
   )
 }
 
+export default Page
+
+// QUERY
 export const pageQuery = graphql`
   query pageQuery($id: String!) {
     contentfulPage(id: { eq: $id }) {
       id
       title
       createdAt(formatString: "MMMM DD, YYYY")
-
       featuredImage {
         title
         description
@@ -41,17 +46,14 @@ export const pageQuery = graphql`
           url
         }
       }
-
       author {
         name
       }
-
       excerpt {
         childMarkdownRemark {
           html
         }
       }
-
       body {
         childMarkdownRemark {
           html
